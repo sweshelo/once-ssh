@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "once-ssh": {
+      "commandName": "Project",
+      "commandLineArgs": "-h 192.168.255.254 -u administrator -p Itsn#000 -c \"show int\""
+    }
+  }
+}

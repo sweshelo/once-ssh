@@ -1,30 +1,35 @@
 ﻿using System;
+using CommandLine;
 
-namespace dhcpWatchClient
+namespace once_ssh
 {
     class Program
     {
- 
+        public class Options
+        {
+            [Option('h', "host", Required = true, HelpText = "SSH server address / hostname")]
+            public string Host { get; set; }
+            [Option('u', "user", Required = true, HelpText = "SSH username")]
+            public string User { get; set; }
+            [Option('p', "password", Required = true, HelpText = "SSH password")]
+            public string Pass { get; set; }
+            //[Option('i', "identify", Required = false, HelpText = "SSH identify key location")]
+            //public string Identify { get; set; }
+            [Option('c', "command", Required = true, HelpText = "Commands to run in the SSH server.")]
+            public string Command { get; set; }
+        }
+
         static void Main(string[] args)
         {
-            if (args.Length < 4)
-            {
-                Console.WriteLine("* Once SSH * Sweshelo");
-                Console.WriteLine("Usage: once-ssh host username password command");
-            }
-            else
-            {
-                string host = args[0];
-                string user = args[1];
-                string pass = args[2];
+            Parser.Default.ParseArguments<Options>(args)
+                   .WithParsed<Options>(o =>
+                   {
+                       var sshobj = new SSHConnection(o.Host, o.User, o.Pass);
+                       sshobj.Command = o.Command;
+                      Console.WriteLine(sshobj.Run());
 
-                string[] commands = new string[(args.Length - 3)];
-                Array.Copy(args, 3, commands, 0, (args.Length - 3));
+                   });
 
-                var sshobj = new SSHConnection(host, user, pass);
-                sshobj.Commands = commands;
-                Console.WriteLine(sshobj.Run());
-            }
         }
     }
 }

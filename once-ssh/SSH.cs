@@ -1,14 +1,14 @@
 ﻿using System;
 using Renci.SshNet;
 
-namespace dhcpWatchClient
+namespace once_ssh
 {
     public class SSHConnection
     {
         private string Host { get; set; }
         private string UserName { get; set; }
         private string Password { get; set; }
-        public string[] Commands { get; set; }
+        public string Command { get; set; }
 
         public SSHConnection(string host, string username, string password)
         {
@@ -25,7 +25,7 @@ namespace dhcpWatchClient
             {
                 client.Connect();
                 if (!client.IsConnected) throw new System.Security.Authentication.AuthenticationException();
-                Array.ForEach(Commands, x => str += client.CreateCommand(x).Execute());
+                str = client.CreateCommand(Command).Execute();
                 client.Disconnect();
             }
 
