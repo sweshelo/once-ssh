@@ -23,6 +23,7 @@ namespace once_ssh
 
             using (var client = new SshClient(Host, UserName, Password))
             {
+                client.ConnectionInfo.Timeout = new TimeSpan(0, 0, 5);
                 client.Connect();
                 if (!client.IsConnected) throw new System.Security.Authentication.AuthenticationException();
                 str = client.CreateCommand(Command).Execute();

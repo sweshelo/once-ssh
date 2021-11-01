@@ -26,8 +26,7 @@ namespace once_ssh
                    {
                        var sshobj = new SSHConnection(o.Host, o.User, o.Pass);
                        sshobj.Command = o.Command;
-                      Console.WriteLine(sshobj.Run());
-
+                       Console.WriteLine(sshobj.Run());
                    });
 
         }
